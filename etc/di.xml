@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright (c) 2026. Volodymyr Hryvinskyi. All rights reserved.
+ * Author: Volodymyr Hryvinskyi <volodymyr@hryvinskyi.com>
+ * GitHub: https://github.com/hryvinskyi
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Hryvinskyi\CatalogSortingPrice\Api\PriceSortFieldNameInterface"
+                type="Hryvinskyi\CatalogSortingPrice\Model\PlatformPriceSortFieldName"/>
+
+    <virtualType name="HryvinskyiCatalogSortingPriceAscSortField"
+                 type="Hryvinskyi\CatalogSortingPrice\Model\PriceShopperSortField">
+        <arguments>
+            <argument name="code" xsi:type="string">price_asc</argument>
+            <argument name="direction" xsi:type="string">asc</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="HryvinskyiCatalogSortingPriceDescSortField"
+                 type="Hryvinskyi\CatalogSortingPrice\Model\PriceShopperSortField">
+        <arguments>
+            <argument name="code" xsi:type="string">price_desc</argument>
+            <argument name="direction" xsi:type="string">desc</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Both registrations are global: search requests are also built outside the storefront area. -->
+    <type name="Hryvinskyi\CatalogSorting\Model\Search\ShopperSortFields">
+        <arguments>
+            <argument name="sortFields" xsi:type="array">
+                <item name="price_asc" xsi:type="object">HryvinskyiCatalogSortingPriceAscSortField</item>
+                <item name="price_desc" xsi:type="object">HryvinskyiCatalogSortingPriceDescSortField</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="HryvinskyiCatalogSortingPriceAscListingOption"
+                 type="Hryvinskyi\CatalogSortingOptions\Model\ConfigFlagListingSortOption">
+        <arguments>
+            <argument name="code" xsi:type="string">price_asc</argument>
+            <argument name="label" xsi:type="string" translate="true">Price: Low to High</argument>
+            <argument name="enabledPath" xsi:type="string">catalog_sorting/price/enabled</argument>
+            <argument name="defaultDirection" xsi:type="string">asc</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="HryvinskyiCatalogSortingPriceDescListingOption"
+                 type="Hryvinskyi\CatalogSortingOptions\Model\ConfigFlagListingSortOption">
+        <arguments>
+            <argument name="code" xsi:type="string">price_desc</argument>
+            <argument name="label" xsi:type="string" translate="true">Price: High to Low</argument>
+            <argument name="enabledPath" xsi:type="string">catalog_sorting/price/enabled</argument>
+            <argument name="defaultDirection" xsi:type="string">desc</argument>
+        </arguments>
+    </virtualType>
+    <type name="Hryvinskyi\CatalogSortingOptions\Model\ListingSortOptions">
+        <arguments>
+            <argument name="options" xsi:type="array">
+                <item name="price_asc" xsi:type="object" sortOrder="170">HryvinskyiCatalogSortingPriceAscListingOption</item>
+                <item name="price_desc" xsi:type="object" sortOrder="180">HryvinskyiCatalogSortingPriceDescListingOption</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
